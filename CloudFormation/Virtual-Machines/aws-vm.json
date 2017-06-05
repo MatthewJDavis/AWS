@@ -1,22 +1,22 @@
 {
 	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "Simple Amazon Linux Server",
+	"Description": "Create a basic Amazon Linux Server",
 	"Parameters": {
 		"KeyName": {
 			"Description": "Key Pair name",
 			"Type": "AWS::EC2::KeyPair::KeyName",
-			"Default": "mykey"
+			"Default": "keyPair"
 		},
 		"VPC": {
-			"Description": "Just select the one and only default VPC",
+			"Description": "Select a VPC",
 			"Type": "AWS::EC2::VPC::Id"
 		},
 		"Subnet": {
-			"Description": "Just select one of the available subnets",
+			"Description": "Select a subnet from the VPC",
 			"Type": "AWS::EC2::Subnet::Id"
 		},
 		"InstanceType": {
-			"Description": "Select one of the possible instance types",
+			"Description": "Select one of the instance types",
 			"Type": "String",
 			"Default": "t2.micro",
 			"AllowedValues": ["t2.micro", "t2.small", "t2.medium"]
