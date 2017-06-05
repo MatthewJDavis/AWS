@@ -12,7 +12,7 @@ Parameters:
     Description: Select a subnet from the VPC
     Type: 'AWS::EC2::Subnet::Id'
   InstanceType:
-    Description: Select one of the possible instance types
+    Description: Select one of the instance types
     Type: String
     Default: t2.micro
     AllowedValues:
