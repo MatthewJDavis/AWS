@@ -68,7 +68,9 @@ Resources:
         - !Ref SecurityGroup
       SubnetId: !Ref Subnet
       Tags:
-        -Name: !Ref Name
+        -
+          Key: Name
+          Value: !Ref Name
 Outputs:
   PublicName:
     Value: !GetAtt 
