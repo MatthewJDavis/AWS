@@ -75,6 +75,7 @@ Resources:
         -
           Key: Name
           Value: !Ref NameInstance1
+  #attach the elastic IP to server 1
   EIP1:
     Type: AWS::EC2::EIP
     Properties:
@@ -96,6 +97,7 @@ Resources:
         -
           Key: Name
           Value: !Ref NameInstance2
+  #attach the elastic IP to server 2
   EIP2:
     Type: AWS::EC2::EIP
     Properties:
