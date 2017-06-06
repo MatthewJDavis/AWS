@@ -71,7 +71,7 @@ Resources:
         -
           Key: Name
           Value: !Ref Name
-  MyEIP:
+  EIP:
     Type: AWS::EC2::EIP
     Properties:
       InstanceId: !Ref Server
@@ -81,3 +81,7 @@ Outputs:
       - Server
       - PublicDnsName
     Description: Public name (connect via SSH as user ec2-user)
+  PublicIP:
+    Value: !GetAtt
+      - Server
+      - PublicIp
