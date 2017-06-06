@@ -71,10 +71,10 @@ Resources:
         -
           Key: Name
           Value: !Ref Name
-    MyEIP:
-      Type: AWS::EC2::EIP
-      Properties:
-        InstanceId: !Ref Server
+  MyEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref Server
 Outputs:
   PublicName:
     Value: !GetAtt 
