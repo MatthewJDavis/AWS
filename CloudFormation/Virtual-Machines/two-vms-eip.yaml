@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Create a basic Amazon Linux Server with security group in existing VPC and subnet
+Description: Creates two Amazon Linux Servers with security group for ssh and elastic IP in existing VPC and subnet
 Parameters:
   KeyName:
     Description: Key Pair name
