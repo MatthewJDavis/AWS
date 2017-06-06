@@ -19,11 +19,11 @@ Parameters:
       - t2.micro
       - t2.small
       - t2.medium
-  Name1:
+  NameInstance1:
     Description: The name of the instance 1
     Type: String
-  Name2:
-    Description: The name of the instance 1
+  NameInstance2:
+    Description: The name of the instance 2
     Type: String
 # EC2 AMIs are mapped for Amazon linux to the following regions. This will  pick the correct AMI for the region
 Mappings:
@@ -74,13 +74,13 @@ Resources:
       Tags:
         -
           Key: Name
-          Value: !Ref NameServer1
-  EIP:
+          Value: !Ref NameInstance1
+  EIP1:
     Type: AWS::EC2::EIP
     Properties:
       InstanceId: !Ref Server1
   #Server 2
-    Server2:
+  Server2:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !FindInMap 
@@ -95,7 +95,7 @@ Resources:
       Tags:
         -
           Key: Name
-          Value: !Ref Name2
+          Value: !Ref NameInstance2
   EIP2:
     Type: AWS::EC2::EIP
     Properties:
