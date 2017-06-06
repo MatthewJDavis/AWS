@@ -19,8 +19,11 @@ Parameters:
       - t2.micro
       - t2.small
       - t2.medium
-  Name:
-    Description: The name of the instance
+  Name1:
+    Description: The name of the instance 1
+    Type: String
+  Name2:
+    Description: The name of the instance 1
     Type: String
 # EC2 AMIs are mapped for Amazon linux to the following regions. This will  pick the correct AMI for the region
 Mappings:
@@ -55,7 +58,8 @@ Resources:
           FromPort: 22
           IpProtocol: tcp
           ToPort: 22
-  Server:
+  #Server 1
+  Server1:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !FindInMap 
@@ -70,18 +74,51 @@ Resources:
       Tags:
         -
           Key: Name
-          Value: !Ref Name
+          Value: !Ref NameServer1
   EIP:
     Type: AWS::EC2::EIP
     Properties:
-      InstanceId: !Ref Server
+      InstanceId: !Ref Server1
+  #Server 2
+    Server2:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !FindInMap 
+        - EC2RegionMap
+        - !Ref 'AWS::Region'
+        - AmazonLinuxAMIHVMEBSBacked64bit
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref SecurityGroup
+      SubnetId: !Ref Subnet
+      Tags:
+        -
+          Key: Name
+          Value: !Ref Name2
+  EIP2:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref Server2
 Outputs:
+  #Output for server 1
   PublicName:
     Value: !GetAtt 
-      - Server
+      - Server1
       - PublicDnsName
     Description: Public name (connect via SSH as user ec2-user)
   PublicIP:
     Value: !GetAtt
-      - Server
+      - Server1
       - PublicIp
+  #Output for server 2
+  PublicName:
+    Value: !GetAtt 
+      - Server2
+      - PublicDnsName
+    Description: Public name (connect via SSH as user ec2-user)
+  PublicIP:
+    Value: !GetAtt
+      - Server2
+      - PublicIp
+    Description: Public IP for server 2
