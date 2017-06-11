@@ -31,7 +31,9 @@ Metadata:
         Parameters:
           - VPC
           - Subnet
-        label: EC2 instance
+        label: 
+          default: EC2 instance
+        Parameters:
           - Name
           - InstanceType
           - KeyName
