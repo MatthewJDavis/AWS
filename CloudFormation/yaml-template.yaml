@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 
+Parameters:
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - ParameterGroup
+    ParameterLabels:
+      ParameterLabel
+Resources:
+Outputs:
