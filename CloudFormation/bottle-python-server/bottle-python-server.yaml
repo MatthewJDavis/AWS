@@ -107,3 +107,8 @@ Outputs:
       - Server
       - PublicDnsName
     Description: Public name (connect via SSH as user ec2-user)
+  PublicIP:
+    Value: !GetAtt
+      - Server
+      - PublicIp
+    Description: Public IP for server
