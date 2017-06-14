@@ -1,0 +1,15 @@
+---
+- hosts: bottleserver
+  remote_user: ec2-user
+  become: yes
+  tasks:
+    - name: test connection
+      ping:
+    - name: make tmp directory
+      command: mkdir /tmp/bottle
+    - name: Copy hello.py to client
+      copy: src=~/hello.py dest=/tmp/bottle/hello.py
+    - name: install bottle
+      command: pip install bottle
+    - name: Start bottle
+      command: python /tmp/test/hello.py
