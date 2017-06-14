@@ -1,7 +1,7 @@
 ---
 - hosts: bottleserver
   remote_user: ec2-user
-  become: yes
+  become: true
   tasks:
     - name: test connection
       ping:
@@ -13,6 +13,7 @@
     - name: Copy hello.py to client
       copy: src=~/hello.py dest=/tmp/bottle/hello.py
     - name: install bottle
-      command: sudo pip install bottle
+      command: pip install bottle
+      become_method: sudo
     - name: Start bottle
       command: python /tmp/bottle/hello.py
