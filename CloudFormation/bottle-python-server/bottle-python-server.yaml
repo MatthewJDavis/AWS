@@ -95,12 +95,6 @@ Resources:
         -
           Key: Name
           Value: !Ref Name
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash -xe
-          yum update -y aws-cfn-bootstrap
-          mkdir /tmp/test
-          sudo pip install bottle
 Outputs:
   PublicName:
     Value: !GetAtt 
