@@ -5,10 +5,11 @@
   tasks:
     - name: test connection
       ping:
-    - file:
-      path: /tmp/bottle
-      state: directory
-      mode: 0755
+    - name: create bottle directory
+      file:
+        path: /tmp/bottle
+        state: directory
+        mode: 0755
     - name: Copy hello.py to client
       copy: src=~/hello.py dest=/tmp/bottle/hello.py
     - name: install bottle
