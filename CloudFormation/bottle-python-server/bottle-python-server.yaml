@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Creates a linux server with Python web framework bottle installed
+Description: Creates a linux server using Amazon linux with 22 and 8080 open in sg
 Parameters:
   KeyName:
     Description: Key Pair name
