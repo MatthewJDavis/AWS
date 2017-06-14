@@ -10,6 +10,6 @@
     - name: Copy hello.py to client
       copy: src=~/hello.py dest=/tmp/bottle/hello.py
     - name: install bottle
-      command: pip install bottle
+      command: sudo pip install bottle
     - name: Start bottle
-      command: python /tmp/test/hello.py
+      command: python /tmp/bottle/hello.py
