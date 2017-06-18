@@ -15,5 +15,5 @@
     - name: install bottle
       command: pip install bottle
       become_method: sudo
-    - name: Start bottle
-      command: python /tmp/bottle/hello.py
+    - name : install cherrypy
+      command: pip install "cherrypy>=3.8.0,<9.0.0"
