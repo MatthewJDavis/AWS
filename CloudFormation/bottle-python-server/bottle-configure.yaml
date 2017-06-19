@@ -1,5 +1,5 @@
 ---
-- hosts: bottleserver
+- hosts: tag_Name_bottle_test
   remote_user: ec2-user
   become: true
   tasks:
