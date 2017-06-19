@@ -11,7 +11,7 @@
         state: directory
         mode: 0755
     - name: Copy hello.py to client
-      copy: src=~/hello.py dest=/tmp/bottle/hello.py
+      copy: src=~/Documents/git/AWS/CloudFormation/bottle-python-server/hello.py dest=/tmp/bottle/hello.py
     - name: install bottle
       command: pip install bottle
       become_method: sudo
