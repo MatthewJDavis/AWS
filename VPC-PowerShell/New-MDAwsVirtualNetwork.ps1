@@ -10,8 +10,7 @@ $subName2 = ''
 
 Set-DefaultAWSRegion -Region $region
 
-# create name tag for VPC
-
+#region Funtions
 function New-MDEC2Tag ($key, $value) {
   $tag = New-Object -TypeName Amazon.EC2.Model.Tag
   $tag.Key = $key 
@@ -20,39 +19,47 @@ function New-MDEC2Tag ($key, $value) {
   return $tag
 }
 
-$vpc = New-EC2Vpc -CidrBlock $addressSpace 
+function New-MDEC2Vpc ($CiderBlock, $tag) {
+  $vpc = New-EC2Vpc -CidrBlock $addressSpace   
+  New-EC2Tag -Resource $vpc.VpcId -Tag $vpcTag
+}
 
+function New-MDEC2Subnet ($CidrBlock, $AvailabilityZone, $VpcId, $Tag) {
+  $subnet = New-EC2Subnet -CidrBlock $CidrBlock -AvailabilityZone $AvailabilityZone -VpcId $VpcId
+  New-EC2Tag -Resource $subnet.SubnetId -Tag $Tag
+}
+
+#endregion
+
+#create the VPC
 $vpcTag = New-MDEC2Tag -key 'Name' -value $vpcName
+New-MDEC2Vpc -CiderBlock $addressSpace -tag $vpcTag
 
-New-EC2Tag -Resource $vpc.VpcId -Tag $vpcTag
 
 # create subnets public and private in each availability zone
 
-$sub1 = New-EC2Subnet -CidrBlock 10.0.1.0/24 -AvailabilityZone eu-west-2a -VpcId $vpc.VpcId
 
+
+# create public subnets
 $sub1Tag = New-MDEC2Tag -key "Name" -value "eu-west-2a-public"
-
-New-EC2Tag -Resource $sub1.SubnetId -Tag $sub1Tag
-
-$sub1 = New-EC2Subnet -CidrBlock 10.0.3.0/24 -AvailabilityZone eu-west-2b -VpcId $vpc.VpcId
-
-$sub1Tag = New-MDEC2Tag -key "Name" -value "eu-west-2b-private"
-
-New-EC2Tag -Resource $sub1.SubnetId -Tag $sub1Tag
-
-
-
-$sub2 = New-EC2Subnet -CidrBlock 10.0.2.0/24 -AvailabilityZone eu-west-2b -VpcId $vpc.VpcId
+New-MDEC2Subnet -CidrBlock 10.0.1.0/24 -AvailabilityZone eu-west-2a -VpcId $vpc.VpcId -Tag $sub1Tag
 
 $sub2Tag = New-MDEC2Tag -key "Name" -value "eu-west-2b-public"
+New-MDEC2Subnet -CidrBlock 10.0.2.0/24 -AvailabilityZone eu-west-2b -VpcId $vpc.VpcId -Tag $sub2Tag
 
-New-EC2Tag -Resource $sub2.SubnetId -Tag $sub2Tag
+# create private subnets
 
-$sub2 = New-EC2Subnet -CidrBlock 10.0.4.0/24 -AvailabilityZone eu-west-2b -VpcId $vpc.VpcId
+$sub3Tag = New-MDEC2Tag -key "Name" -value "eu-west-2a-private"
+New-MDEC2Subnet -CidrBlock 10.0.3.0/24 -AvailabilityZone eu-west-2a -VpcId $vpc.VpcId -Tag $sub3Tag
 
-$sub2Tag = New-MDEC2Tag -key "Name" -value "eu-west-2b-private"
+$sub4Tag = New-MDEC2Tag -key "Name" -value "eu-west-2b-private"
+New-MDEC2Subnet -CidrBlock 10.0.4.0/24 -AvailabilityZone eu-west-2b -VpcId $vpc.VpcId -Tag $sub4Tag
 
-New-EC2Tag -Resource $sub2.SubnetId -Tag $sub2Tag
+# create 
+
+
+
+
 
 
 
