@@ -22,6 +22,7 @@ function New-MDEC2Tag ($key, $value) {
 function New-MDEC2Vpc ($CiderBlock, $tag) {
   $vpc = New-EC2Vpc -CidrBlock $addressSpace   
   New-EC2Tag -Resource $vpc.VpcId -Tag $vpcTag
+  return $vpc
 }
 
 function New-MDEC2Subnet ($CidrBlock, $AvailabilityZone, $VpcId, $Tag) {
@@ -33,7 +34,7 @@ function New-MDEC2Subnet ($CidrBlock, $AvailabilityZone, $VpcId, $Tag) {
 
 #create the VPC
 $vpcTag = New-MDEC2Tag -key 'Name' -value $vpcName
-New-MDEC2Vpc -CiderBlock $addressSpace -tag $vpcTag
+$vpc = New-MDEC2Vpc -CiderBlock $addressSpace -tag $vpcTag
 
 
 # create subnets public and private in each availability zone
