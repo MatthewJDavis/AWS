@@ -6,7 +6,7 @@ Describe "VPC created with PowerShell" {
   Mock New-EC2Subnet -MockWith { return @{subNetid = 'mySubnetId'}}
   Context "Tag"{
     $tag =  New-MDEC2Tag -key "Name" -value "London"
-    It "Tage has correct key" {
+    It "Tag$ has correct key" {
       $tag.key | should be  "Name" 
     } 
     It "Tag has correct value" {
