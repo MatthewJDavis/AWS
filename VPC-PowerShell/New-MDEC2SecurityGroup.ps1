@@ -27,32 +27,27 @@ Grant-EC2SecurityGroupIngress -GroupId $sg.GroupId -IpPermission $rdpSg
 
 
 # internet gateway
-
-New-EC2InternetGateway | Add-EC2InternetGateway -VpcId $vpcId
-
+$igw = New-EC2InternetGateway | Add-EC2InternetGateway -VpcId $vpcId
 
 # nat gateway
-#create eip
+# 1. create eip
 $eip = New-EC2Address 
-
-#create nat gateway
-New-EC2NatGateway -AllocationId $eip.AllocationId -SubnetId subnet-0a3cb271 
-
-
+# 2. create nat gateway
+$ngw = New-EC2NatGateway -AllocationId $eip.AllocationId -SubnetId subnet-0a3cb271 
 
 # route tables
 # public
-New-EC2RouteTable -VpcId vpc-b47ce2dd
-$pubRouteTag = New-MDEC2Tag -key 'Name' -value 'public-route'
-New-EC2Tag -Resource rtb-cfb3dca6 -Tag $pubRouteTag
+$publicRouteTable = New-EC2RouteTable -VpcId vpc-b47ce2dd
+$publicRouteTag = New-MDEC2Tag -key 'Name' -value 'public-route'
+New-EC2Tag -Resource rtb-cfb3dca6 -Tag $publicRouteTag
 
 # private
-$prviRoute= New-EC2RouteTable -VpcId vpc-b47ce2dd
+$privateRouteTable= New-EC2RouteTable -VpcId vpc-b47ce2dd
 $privRouteTag = New-MDEC2Tag -key 'Name' -value 'private-route'
-New-EC2Tag -Resource $prviRoute.RouteTableId -Tag $privRouteTag
+New-EC2Tag -Resource $privateRouteTable.RouteTableId -Tag $privRouteTag
 
 # public route to igw
-New-EC2Route -RouteTableId 	rtb-cfb3dca6 -GatewayId igw-76f3411f -DestinationCidrBlock 0.0.0.0/0
+New-EC2Route -RouteTableId 	$privateRouteTable.RouteTableId -GatewayId $igw.InternetGatewayId -DestinationCidrBlock 0.0.0.0/0
 
 # privte route to nat
-New-EC2Route -RouteTableId rtb-f3016f9a -NatGatewayId nat-09fb05314a15de3ec -DestinationCidrBlock 0.0.0.0/0
+New-EC2Route -RouteTableId $publicRouteTable.RouteTableId -NatGatewayId $ngw.NatGatewayId -DestinationCidrBlock 0.0.0.0/0
