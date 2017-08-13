@@ -1,30 +1,30 @@
 # Create security groups, internet gateway, nat gatway, routing.
 
+#params
 $vpcId = 'vpc-b47ce2dd'
 $sgNameRDP = 'London-RDP'
 
-New-EC2SecurityGroup -GroupName $sgNameRDP -Description "my security group" -VpcId $vpcId
+#RDP security groups
+New-EC2SecurityGroup -GroupName $sgNameRDP -Description "Allow RDP protocol" -VpcId $vpcId
 
 $sgRDP = Get-EC2SecurityGroup | Where-Object -FilterScript {$_.GroupName -eq $sgNameRDP}
-
 
 $rdp = @{ IpProtocol="tcp"; FromPort="3389"; ToPort="3389"; IpRanges="0.0.0.0/0" }
 Grant-EC2SecurityGroupIngress -GroupId $sgRDP.GroupId -IpPermission $rdp
 
+# Private security group - allow traffic only from the public security group
 $sgNamePrivate = "London-Private-sg"
-$descriptionPrivate = "Private security group, allowing traffic only from other security groups"
+$descriptionPrivate = "Private security group, allowing traffic only from the public security group"
 
 New-EC2SecurityGroup -GroupName $sgNamePrivate -Description $descriptionPrivate -VpcId $vpcId
-
+# create object for the rdp group id that will be allowed to send traffic
 $ug = New-Object Amazon.EC2.Model.UserIdGroupPair
 $ug.GroupId = $sgRDP.GroupId
-
 
 $sg = Get-EC2SecurityGroup | Where-Object -FilterScript {$_.GroupName -eq $sgNamePrivate}
 
 $rdpSg = @{ IpProtocol="tcp"; FromPort="3389"; ToPort="3389"; UserIdGroupPairs= $ug }
 Grant-EC2SecurityGroupIngress -GroupId $sg.GroupId -IpPermission $rdpSg
-
 
 # internet gateway
 $igw = New-EC2InternetGateway | Add-EC2InternetGateway -VpcId $vpcId
