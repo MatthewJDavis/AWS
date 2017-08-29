@@ -75,14 +75,14 @@ Resources:
         -
           Key: Name
           Value: !Ref Name
-  UserData:
-    Fn::Base64: !Sub |
-      #!/bin/bash
-      yum install httpd -y
-      yum update -y
-      aws s3 cp s3://matt-aws/website-pages/index.html /var/www/html/
-      service httpd start
-      chkconfig httpd on
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum install httpd -y
+          yum update -y
+          aws s3 cp s3://matt-aws/website-pages/index.html /var/www/html/
+          service httpd start
+          chkconfig httpd on
 Outputs:
   PublicName:
     Value: !GetAtt 
