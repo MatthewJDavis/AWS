@@ -71,7 +71,7 @@ Resources:
       SecurityGroupIds:
         - !Ref SecurityGroup
       SubnetId: !Ref Subnet
-      IamInstanceProfile: arn:aws:iam::815306663282:role/matt-aws-s3-access 
+      IamInstanceProfile: matt-aws-s3-access 
       Tags:
         -
           Key: Name
