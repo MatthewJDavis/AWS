@@ -1,0 +1,97 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create a basic Amazon Linux Server with security group in existing VPC and subnet
+Parameters:
+  KeyName:
+    Description: Key Pair name
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    Default: keyPair
+  VPC:
+    Description: Select a VPC
+    Type: 'AWS::EC2::VPC::Id'
+  Subnet:
+    Description: Select a subnet from the VPC
+    Type: 'AWS::EC2::Subnet::Id'
+  InstanceType:
+    Description: Select one of the instance types
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.medium
+  Name:
+    Description: The name of the instance
+    Type: String
+# EC2 AMIs are mapped for Amazon linux to the following regions. This will  pick the correct AMI for the region
+Mappings:
+  EC2RegionMap:
+    ap-northeast-1:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-cbf90ecb
+    ap-southeast-1:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-68d8e93a
+    ap-southeast-2:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-fd9cecc7
+    eu-central-1:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-a8221fb5
+    eu-west-1:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-a10897d6
+    sa-east-1:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-b52890a8
+    us-east-1:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-1ecae776
+    us-west-1:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-d114f295
+    us-west-2:
+      AmazonLinuxAMIHVMEBSBacked64bit: ami-e7527ed7
+Resources:
+  # create security group to allow ssh
+  SecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: basic-amazon-linux-sg
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+        - CidrIp: 0.0.0.0/0
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+  Server:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !FindInMap 
+        - EC2RegionMap
+        - !Ref 'AWS::Region'
+        - AmazonLinuxAMIHVMEBSBacked64bit
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref SecurityGroup
+      SubnetId: !Ref Subnet
+      IamInstanceProfile: matt-aws-s3-access 
+      Tags:
+        -
+          Key: Name
+          Value: !Ref Name
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum install httpd -y
+          yum update -y
+          aws s3 cp s3://matt-aws/web-pages/index.html /var/www/html/ --region eu-west-2
+          service httpd start
+          chkconfig httpd on
+Outputs:
+  PublicName:
+    Value: !GetAtt 
+      - Server
+      - PublicDnsName
+    Description: Public name (connect via SSH as user ec2-user)
+  PublicIp:
+    Value: !GetAtt
+      - Server
+      - PublicIp
+    Description: Public IP address
