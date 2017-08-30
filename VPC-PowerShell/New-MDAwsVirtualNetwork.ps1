@@ -32,7 +32,9 @@ function New-MDAwsVirtualNetwork {
     }
 
     function New-MDEC2Vpc ($CiderBlock, $tag) {
-      $vpc = New-EC2Vpc -CidrBlock $addressSpace   
+      $vpc = New-EC2Vpc -CidrBlock $addressSpace  
+      Edit-EC2VpcAttribute -VpcId $vpc.VpcId -EnableDnsSupport $true
+      Edit-EC2VpcAttribute -VpcId $vpc.VpcId -EnableDnsHostnames $true  
       New-EC2Tag -Resource $vpc.VpcId -Tag $vpcTag
       return $vpc
     }
