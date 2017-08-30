@@ -19,5 +19,10 @@ $instanceType = New-MDCFNParameter -Key 'InstanceType' -Value 't2.micro'
 $keyName = New-MDCFNParameter -Key 'KeyName' -Value ''
 $subnet = New-MDCFNParameter -Key 'Subnet' -Value 'subnet-06817b5d'
 $vpc = New-MDCFNParameter -Key 'VPC' -Value 'vpc-b79217d0'
-$name = New-MDCFNParameter -Key 'Name' -Value 'simple-web-servers'
+$name = New-MDCFNParameter -Key 'Name' -Value 'simple-web-server'
 
+
+
+New-CFNStack -StackName simple-web1 -TemplateBody $temp -Parameter @($instanceType, $keyName, $subnet, $vpc, $name)
+
+$temp  = Get-Content .\simple-web-server.yml -Raw
