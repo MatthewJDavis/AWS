@@ -1,28 +1,31 @@
-AWS
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates an S3 bucket
+Parameters:
+  BucketName:
+    Description: Name of the S3 bucket must be unique in the region
+    Type: String
 
-
-
-
-
-Type: "AWS::S3::Bucket"
-Properties: 
-  AccessControl: String
-  BucketName: String
-  CorsConfiguration:
-    CORS Configuration
-  LifecycleConfiguration:
-    Lifecycle Configuration
-  LoggingConfiguration:
-    Logging Configuration
-  NotificationConfiguration:
-    Notification Configuration
-  MetricsConfigurations: 
-    - MetricsConfiguration
-  ReplicationConfiguration:
-    Replication Configuration
-  Tags:
-    - Resource Tag
-  VersioningConfiguration:
-    Versioning Configuration
-  WebsiteConfiguration:
-    Website Configuration Type
+Resources:
+  Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties: 
+      AccessControl: String
+      BucketName: String
+      CorsConfiguration:
+        CORS Configuration
+      LifecycleConfiguration:
+        Lifecycle Configuration
+      LoggingConfiguration:
+        Logging Configuration
+      NotificationConfiguration:
+        Notification Configuration
+      MetricsConfigurations: 
+        - MetricsConfiguration
+      ReplicationConfiguration:
+        Replication Configuration
+      Tags:
+        - Resource Tag
+      VersioningConfiguration:
+        Versioning Configuration
+      WebsiteConfiguration:
+        Website Configuration Type
