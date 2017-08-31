@@ -12,7 +12,7 @@ Resources:
   Bucket:
     Type: "AWS::S3::Bucket"
     Properties: 
-      AccessControl: String
+      AccessControl: BucketOwnerFullControl
       BucketName: !Ref BucketName 
       Tags:
         -
