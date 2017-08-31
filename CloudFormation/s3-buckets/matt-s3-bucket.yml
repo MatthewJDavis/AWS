@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Creates an S3 bucket
+Description: Creates an S3 bucket given the owner full control.
 Parameters:
   BucketName:
     Description: Name of the S3 bucket must be unique in the region
@@ -7,7 +7,6 @@ Parameters:
   ProjectTag:
     Description: Tag value for the project
     Type: String
-  
 Resources:
   Bucket:
     Type: "AWS::S3::Bucket"
@@ -18,7 +17,6 @@ Resources:
         -
           Key: Project
           Value: !Ref ProjectTag
-
 Outputs:
   DomainName:
     Value: !GetAtt
